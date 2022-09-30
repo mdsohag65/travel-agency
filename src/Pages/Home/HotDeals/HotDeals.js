@@ -5,40 +5,29 @@ import hot3 from '../../../images/hot/hot3.jpg';
 import hot4 from '../../../images/hot/hot4.jpg';
 import hot5 from '../../../images/hot/hot5.jpg';
 import hot6 from '../../../images/hot/hot6.jpg';
+import Deal from '../Home/Deal/Deal';
 
+const deals = [
+    { id: 1, name: 'Gorcme, Turkey', img: hot1 },
+    { id: 2, name: 'Paraty, Brazil', img: hot2 },
+    { id: 3, name: 'Playa del Carmen, Mexico', img: hot3 },
+    { id: 4, name: 'Dominican Republic', img: hot4 },
+    { id: 5, name: 'Paris', img: hot5 },
+    { id: 6, name: 'Maldives', img: hot6 },
+]
 const HotDeals = () => {
     return (
-        <div>
+        <section className='mt-8 ml-10'>
             <h1 className='text-3xl text-center font-bold mb-5'><span className='text-accent'>Hot</span> Deals</h1>
-            <div class="carousel w-1/2 h-96 mx-auto rounded">
-                <div id="item1" class="carousel-item w-full">
-                    <img src={hot1} class="w-full" alt='' />
-                </div>
-                <div id="item2" class="carousel-item w-full">
-                    <img src={hot2} class="w-full" alt='' />
-                </div>
-                <div id="item3" class="carousel-item w-full">
-                    <img src={hot3} class="w-full" alt='' />
-                </div>
-                <div id="item4" class="carousel-item w-full">
-                    <img src={hot4} class="w-full" alt='' />
-                </div>
-                <div id="item5" class="carousel-item w-full">
-                    <img src={hot5} class="w-full" alt='' />
-                </div>
-                <div id="item6" class="carousel-item w-full">
-                    <img src={hot6} class="w-full" alt='' />
-                </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+                {
+                    deals.map(deal => <Deal
+                        key={deal.id}
+                        deal={deal}
+                    ></Deal>)
+                }
             </div>
-            <div class="flex justify-center w-full py-2 gap-2">
-                <a href="#item1" class="btn btn-xs">1</a>
-                <a href="#item2" class="btn btn-xs">2</a>
-                <a href="#item3" class="btn btn-xs">3</a>
-                <a href="#item4" class="btn btn-xs">4</a>
-                <a href="#item5" class="btn btn-xs">5</a>
-                <a href="#item6" class="btn btn-xs">6</a>
-            </div>
-        </div>
+        </section>
     );
 };
 
