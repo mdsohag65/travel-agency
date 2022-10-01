@@ -9,6 +9,7 @@ const Header = () => {
         <li><Link to='/hot'>Hot Deals</Link></li>
         <li><Link to='/guides'>Guides</Link></li>
         <li><Link to='/about'>About</Link></li>
+        <li><Link to='/login'>Login</Link></li>
     </>
     return (
         <div className="navbar bg-secondary">

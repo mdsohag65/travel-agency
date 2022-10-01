@@ -4,7 +4,9 @@ import About from './Pages/About/About';
 import Home from './Pages/Home/Home/Home';
 import HotDeals from './Pages/Home/HotDeals/HotDeals';
 import Places from './Pages/Home/Places/Places';
+import Login from './Pages/Login/Login';
 import PlaceDetail from './Pages/PlaceDetail/PlaceDetail';
+import Register from './Pages/Register/Register';
 import Header from './Pages/Shared/Header/Header';
 import NotFound from './Pages/Shared/NotFound/NotFound';
 
@@ -18,6 +20,8 @@ function App() {
         <Route path='/place/:placeId' element={<PlaceDetail />}></Route>
         <Route path='/hot' element={<HotDeals />}></Route>
         <Route path='/about' element={<About />}></Route>
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='/register' element={<Register />}></Route>
         <Route path='*' element={<NotFound></NotFound>}></Route>
       </Routes>
     </div>
