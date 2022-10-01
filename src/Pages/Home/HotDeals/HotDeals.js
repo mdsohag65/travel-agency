@@ -5,6 +5,7 @@ import hot3 from '../../../images/hot/hot3.jpg';
 import hot4 from '../../../images/hot/hot4.jpg';
 import hot5 from '../../../images/hot/hot5.jpg';
 import hot6 from '../../../images/hot/hot6.jpg';
+import Footer from '../../Shared/Footer/Footer';
 import Deal from '../Home/Deal/Deal';
 
 const deals = [
@@ -17,16 +18,19 @@ const deals = [
 ]
 const HotDeals = () => {
     return (
-        <section className='mt-8 ml-10'>
-            <h1 className='text-3xl text-center font-bold mb-5'><span className='text-accent'>Hot</span> Deals</h1>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
-                {
-                    deals.map(deal => <Deal
-                        key={deal.id}
-                        deal={deal}
-                    ></Deal>)
-                }
+        <section>
+            <div className='mt-8 ml-10'>
+                <h1 className='text-3xl text-center font-bold mb-5'><span className='text-accent'>Hot</span> Deals</h1>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+                    {
+                        deals.map(deal => <Deal
+                            key={deal.id}
+                            deal={deal}
+                        ></Deal>)
+                    }
+                </div>
             </div>
+            <Footer></Footer>
         </section>
     );
 };
