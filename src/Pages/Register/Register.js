@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
+import SocialLogin from '../Login/SocialLogin/SocialLogin';
+import Loading from '../Shared/Loading/Loading';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -12,19 +14,28 @@ const Register = () => {
         error,
     ] = useCreateUserWithEmailAndPassword(auth);
 
-    const handleRegister = event => {
+    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+
+    const handleRegister = async (event) => {
         event.preventDefault();
         const name = event.target.name.value;
         const email = event.target.email.value;
         const pass = event.target.password.value;
 
-        createUserWithEmailAndPassword(email, pass);
-    }
-    if (user) {
+        await createUserWithEmailAndPassword(email, pass);
+        await updateProfile({ displayName: name });
+        console.log('Profile Updated');
         navigate('/home');
     }
+
+    if (loading || updating) {
+        return <Loading></Loading>
+    }
+    if (user) {
+        console.log(user);
+    }
     return (
-        <section className='flex justify-center items-center h-screen'>
+        <section className='flex justify-center items-center h-screen my-8'>
             <div className="card w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
                     <h2 className="text-center text-2xl font-bold">Register!</h2>
@@ -47,11 +58,11 @@ const Register = () => {
                             </label>
                             <input type="password" name='password' placeholder="Your Password" className="input input-bordered w-full max-w-xs" />
                         </div>
-                        <input className='btn btn-primary w-full max-w-xs mt-5' type="submit" value="Register" />
+                        <input className='btn btn-secondary w-full max-w-xs mt-5' type="submit" value="Register" />
                     </form>
                     <p><small>Already have an account? <Link className='text-accent' to="/login">Please login</Link></small></p>
-                    {/* <div className="divider">OR</div>
-                    <button onClick={() => signInWithGoogle()} className="btn btn-outline">Continue with Google</button> */}
+                    <div className="divider">OR</div>
+                    <SocialLogin></SocialLogin>
                 </div>
             </div>
         </section>

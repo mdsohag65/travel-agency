@@ -1,12 +1,19 @@
-import React from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import React, { useRef } from 'react';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import SocialLogin from './SocialLogin/SocialLogin';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loading from '../Shared/Loading/Loading';
 
 const Login = () => {
+    const emailRef = useRef('');
+    const passRef = useRef('');
     const navigate = useNavigate();
     const location = useLocation();
     let from = location.state?.from?.pathname || '/';
+    let errorMessage;
 
     const [
         signInWithEmailAndPassword,
@@ -15,13 +22,34 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
+    const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+
+    if (loading || sending) {
+        return <Loading></Loading>
+    }
+    if (error) {
+        errorMessage = <p className='text-red-500'>Error: {error?.message}</p>
+    }
+
     if (user) {
         navigate(from, { replace: true });
     }
+
+    const resetPass = async () => {
+        const email = emailRef.current.value;
+        if (email) {
+            await sendPasswordResetEmail(email);
+            toast("Email Sent");
+        }
+        else {
+            toast.error('Please Enter Your Email');
+        }
+    }
+
     const handleSubmit = event => {
         event.preventDefault();
-        const email = event.target.email.value;
-        const pass = event.target.password.value;
+        const email = emailRef.current.value;
+        const pass = passRef.current.value;
 
         signInWithEmailAndPassword(email, pass);
     }
@@ -35,19 +63,22 @@ const Login = () => {
                             <label className="label">
                                 <span className="label-text">Email</span>
                             </label>
-                            <input type="email" name='email' placeholder="Your Email" className="input input-bordered w-full max-w-xs" />
+                            <input ref={emailRef} type="email" name='email' placeholder="Your Email" className="input input-bordered w-full max-w-xs" />
                         </div>
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="password" name='password' placeholder="Your Password" className="input input-bordered w-full max-w-xs" />
+                            <input ref={passRef} type="password" name='password' placeholder="Your Password" className="input input-bordered w-full max-w-xs" />
                         </div>
-                        <input className='btn btn-primary w-full max-w-xs mt-5' type="submit" value="Login" />
+                        <p onClick={resetPass}><small className='text-primary cursor-pointer'>Forget Password?</small></p>
+                        <input className='btn btn-secondary w-full max-w-xs mt-5' type="submit" value="Login" />
                     </form>
+                    {errorMessage}
                     <p><small>New to Travio? <Link className='text-accent' to="/register">Create a New Account</Link></small></p>
-                    {/* <div className="divider">OR</div>
-                    <button onClick={() => signInWithGoogle()} className="btn btn-outline">Continue with Google</button> */}
+                    <div className="divider">OR</div>
+                    <SocialLogin></SocialLogin>
+                    <ToastContainer />
                 </div>
             </div>
         </section>
