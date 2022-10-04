@@ -1,50 +1,53 @@
-import React, { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import auth from '../../firebase.init';
 
 const Login = () => {
-    const emailRef = useRef('');
-    const passRef = useRef('');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || '/';
 
+    const [
+        signInWithEmailAndPassword,
+        user,
+        loading,
+        error,
+    ] = useSignInWithEmailAndPassword(auth);
+
+    if (user) {
+        navigate(from, { replace: true });
+    }
     const handleSubmit = event => {
         event.preventDefault();
-        const email = emailRef.current.value;
-        const pass = passRef.current.value;
+        const email = event.target.email.value;
+        const pass = event.target.password.value;
 
-        console.log(email, pass);
-    }
-    const navigateRegister = event => {
-        navigate('/register');
+        signInWithEmailAndPassword(email, pass);
     }
     return (
-        <section>
-            <div class="hero min-h-screen bg-base-200">
-                <div class="hero-content">
+        <section className='flex justify-center items-center h-screen'>
+            <div className="card w-96 bg-base-100 shadow-xl">
+                <div className="card-body">
+                    <h2 className="text-center text-2xl font-bold">Login!</h2>
                     <form onSubmit={handleSubmit}>
-                        <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                            <div class="card-body">
-                                <div class="form-control">
-                                    <label class="label">
-                                        <span class="label-text">Email</span>
-                                    </label>
-                                    <input ref={emailRef} type="text" placeholder="email" class="input input-bordered" required />
-                                </div>
-                                <div class="form-control">
-                                    <label class="label">
-                                        <span class="label-text">Password</span>
-                                    </label>
-                                    <input ref={passRef} type="password" placeholder="password" class="input input-bordered" required />
-                                    <label class="label">
-                                        <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
-                                    </label>
-                                </div>
-                                <div class="form-control mt-6">
-                                    <button class="btn btn-primary">Login</button>
-                                </div>
-                                <p>New to Travio?<span onClick={navigateRegister} className='text-accent link link-hover'>Please Register</span></p>
-                            </div>
+                        <div className="form-control w-full max-w-xs">
+                            <label className="label">
+                                <span className="label-text">Email</span>
+                            </label>
+                            <input type="email" name='email' placeholder="Your Email" className="input input-bordered w-full max-w-xs" />
                         </div>
+                        <div className="form-control w-full max-w-xs">
+                            <label className="label">
+                                <span className="label-text">Password</span>
+                            </label>
+                            <input type="password" name='password' placeholder="Your Password" className="input input-bordered w-full max-w-xs" />
+                        </div>
+                        <input className='btn btn-primary w-full max-w-xs mt-5' type="submit" value="Login" />
                     </form>
+                    <p><small>New to Travio? <Link className='text-accent' to="/register">Create a New Account</Link></small></p>
+                    {/* <div className="divider">OR</div>
+                    <button onClick={() => signInWithGoogle()} className="btn btn-outline">Continue with Google</button> */}
                 </div>
             </div>
         </section>
