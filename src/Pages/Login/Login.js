@@ -75,7 +75,7 @@ const Login = () => {
                         <input className='btn btn-secondary w-full max-w-xs mt-5' type="submit" value="Login" />
                     </form>
                     {errorMessage}
-                    <p><small>New to Travio? <Link className='text-accent' to="/register">Create a New Account</Link></small></p>
+                    <p><small>New to Travel? <Link className='text-accent' to="/register">Create a New Account</Link></small></p>
                     <div className="divider">OR</div>
                     <SocialLogin></SocialLogin>
                     <ToastContainer />
