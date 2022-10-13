@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import usePlaces from '../hooks/usePlaces';
 
 const ManagePlace = () => {
@@ -14,6 +15,7 @@ const ManagePlace = () => {
                 .then(data => {
                     const remaining = places.filter(place => place._id !== id);
                     setPlaces(remaining);
+                    toast("Delete successfully");
                 })
         }
     }
@@ -40,6 +42,7 @@ const ManagePlace = () => {
                     </tbody>
                 </table>
             </div>
+            <ToastContainer />
         </div>
     );
 };
